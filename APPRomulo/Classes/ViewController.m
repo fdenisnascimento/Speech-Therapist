@@ -102,13 +102,19 @@
         }
         
         NSString *soundPath = [[NSBundle mainBundle] pathForResource:speech_ ofType:@"mp3"];
+      
+      if (audioPlayer) {
+          [audioPlayer stop];
+          audioPlayer = nil;
+      }
+      
         audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:soundPath] error:NULL];
         [audioPlayer prepareToPlay];
         [audioPlayer play];
 
     }
     @catch (NSException *exception) {
-        
+        NSLog(@"audio:%@",exception.description);
     }
     @finally {
         
@@ -203,7 +209,7 @@
 
     
     player = [AVPlayer playerWithPlayerItem:anItem];
-    [player addObserver:self forKeyPath:@"status" options:0 context:nil];
+//    [player addObserver:self forKeyPath:@"status" options:0 context:nil];
     [player play];
     
 
@@ -246,19 +252,19 @@
 
 }
 
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-    if (object == player && [keyPath isEqualToString:@"status"]) {
-        if (player.status == AVPlayerStatusFailed) {
-            NSLog(@"AVPlayer Failed");
-        } else if (player.status == AVPlayerStatusReadyToPlay) {
-            NSLog(@"AVPlayer Ready to Play");
-        } else if (player.status == AVPlayerItemStatusUnknown) {
-            NSLog(@"AVPlayer Unknown");
-        }
-    }
-}
+//
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//    
+//    if (object == player && [keyPath isEqualToString:@"status"]) {
+//        if (player.status == AVPlayerStatusFailed) {
+//            NSLog(@"AVPlayer Failed");
+//        } else if (player.status == AVPlayerStatusReadyToPlay) {
+//            NSLog(@"AVPlayer Ready to Play");
+//        } else if (player.status == AVPlayerItemStatusUnknown) {
+//            NSLog(@"AVPlayer Unknown");
+//        }
+//    }
+//}
 
 
 
